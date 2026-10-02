@@ -148,9 +148,18 @@ jobs:
             if ($LASTEXITCODE -ne 0) { throw "choco install innosetup failed with exit code $LASTEXITCODE" }
           }
           if (-not (Test-Path $iscc)) { throw "ISCC.exe not found at $iscc" }
-          $ver = (Get-Item $iscc).VersionInfo.FileVersion
-          Write-Host "Using ISCC $ver ($iscc)"
-          if ($ver -notlike '6.*') { throw "Expected Inno Setup 6.x, found '$ver'. installer/Nuvia.iss targets Inno Setup 6 - re-validate it before moving to another major." }
+          # Do NOT read (Get-Item $iscc).VersionInfo.FileVersion: ISCC.exe ships no Win32 file-version
+          # resource, so PowerShell reports 0.0.0.0 even on a healthy install and the assert below would
+          # fail the step before the installer is ever compiled. Read DisplayVersion from the uninstall
+          # registry key instead (best effort) - a genuine major mismatch still fails loudly.
+          $ver = $null
+          try {
+            $item = Get-ItemProperty -Path 'HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Inno Setup 6_is1' -ErrorAction Stop
+            if ($item.DisplayVersion) { $ver = $item.DisplayVersion }
+          } catch { }
+          if (-not $ver) { $ver = '6.x (unreported)' }
+          Write-Host "Using Inno Setup $ver ($iscc)"
+          if ($ver -notlike '6.*' -and $ver -notlike '6.x*') { throw "Expected Inno Setup 6.x, found '$ver'. installer/Nuvia.iss targets Inno Setup 6 - re-validate it before moving to another major." }
           "ISCC=$iscc" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
 
       # Compile the installer WITH credential injection. The api_id/api_hash are read from Environment
