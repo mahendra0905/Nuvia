@@ -1,0 +1,57 @@
+<Window x:Class="Nuvia.App.CreateGroupWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Create private storage group"
+        Width="440"
+        SizeToContent="Height"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False"
+        Background="{StaticResource WindowBgBrush}">
+    <StackPanel Margin="20">
+        <TextBlock x:Name="HeadingText"
+                   Text="Create a private storage group"
+                   FontSize="16"
+                   FontWeight="SemiBold"
+                   Foreground="{StaticResource TextPrimaryBrush}"
+                   Margin="0,0,0,8" />
+        <TextBlock x:Name="DescriptionText"
+                   TextWrapping="Wrap"
+                   Foreground="{StaticResource TextSecondaryBrush}"
+                   FontSize="12"
+                   Margin="0,0,0,14"
+                   Text="This creates one private supergroup on your own Telegram account. You are its only member: no one is invited, no contacts are read, it has no public link, and it is never created without this confirmation. You can then choose it as an upload destination instead of Saved Messages." />
+
+        <TextBlock Text="Group name" FontWeight="SemiBold" Margin="0,0,0,4"
+                   Foreground="{StaticResource TextPrimaryBrush}" />
+        <TextBox x:Name="NameBox"
+                 MaxLength="128"
+                 Padding="6,4"
+                 FontSize="13"
+                 TextChanged="NameBox_TextChanged" />
+        <TextBlock x:Name="ValidationText"
+                   Foreground="{StaticResource DangerTextBrush}"
+                   FontSize="11"
+                   Margin="0,4,0,0"
+                   Visibility="Collapsed"
+                   Text="Enter a name for the group." />
+
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Margin="0,18,0,0">
+            <Button x:Name="CancelButton"
+                    Content="Cancel"
+                    IsCancel="True"
+                    Style="{StaticResource SecondaryButton}"
+                    MinWidth="96"
+                    Margin="0,0,8,0"
+                    Click="CancelButton_Click" />
+            <Button x:Name="CreateButton"
+                    Content="Create group"
+                    IsDefault="True"
+                    Style="{StaticResource PrimaryButton}"
+                    MinWidth="96"
+                    Click="CreateButton_Click" />
+        </StackPanel>
+    </StackPanel>
+</Window>

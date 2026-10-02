@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nuvia — Product Film Animatic (motion beats)</title>
+  <link rel="stylesheet" href="animatic.css" />
+</head>
+<body>
+  <!-- Reusable "n" mark (Segoe Script, outlined) from assets/nuvia-mark.svg -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="nmark" viewBox="0 0 2253.2 2253.2">
+      <g transform="translate(92.12 1666.12) scale(1 -1)">
+        <path d="M1888 715Q1888 696 1881.5 676.5Q1875 657 1865.5 637.5Q1856 618 1844.0 599.5Q1832 581 1821 564Q1792 519 1753.0 472.5Q1714 426 1669.5 382.0Q1625 338 1578.0 299.0Q1531 260 1486 230Q1450 206 1417.5 185.0Q1385 164 1352.0 149.0Q1319 134 1283.0 125.0Q1247 116 1204 116Q1121 116 1069 158Q1043 179 1023.5 212.5Q1004 246 989.5 287.0Q975 328 964.5 374.0Q954 420 947 465Q938 521 930.0 565.5Q922 610 911.5 640.5Q901 671 886.0 687.5Q871 704 847 704Q828 704 811.0 700.0Q794 696 775.5 684.0Q757 672 735.0 650.0Q713 628 683.5 592.0Q654 556 616.0 504.0Q578 452 527 380Q502 345 468.0 303.0Q434 261 398.5 223.0Q363 185 329.0 156.0Q295 127 269 119Q181 138 181 338Q181 391 193 499Q199 548 207.0 601.5Q215 655 227.0 708.5Q239 762 254.5 812.5Q270 863 291 906Q301 926 312.0 937.5Q323 949 334.5 954.5Q346 960 358.5 961.5Q371 963 384 963Q400 963 412.5 941.0Q425 919 425 880Q425 856 421.0 835.0Q417 814 410.0 792.0Q403 770 395.0 744.5Q387 719 379 686Q373 659 365.5 626.0Q358 593 351.5 559.0Q345 525 340.5 492.5Q336 460 336 434Q336 416 342 397Q370 400 434 481Q467 522 506.5 571.0Q546 620 592 679Q626 723 659.5 761.0Q693 799 729.0 827.5Q765 856 805.5 872.5Q846 889 895 889Q947 889 981.5 866.5Q1016 844 1037.0 804.5Q1058 765 1069.5 710.0Q1081 655 1088 589Q1094 533 1099.5 478.0Q1105 423 1121.0 379.5Q1137 336 1167.0 309.0Q1197 282 1253 282Q1296 282 1343.0 302.0Q1390 322 1442.0 357.5Q1494 393 1549.5 441.0Q1605 489 1664 546Q1687 568 1714.5 601.5Q1742 635 1768.5 666.0Q1795 697 1818.0 719.0Q1841 741 1855 741Q1861 741 1874.5 735.0Q1888 729 1888 715Z"/>
+      </g>
+    </symbol>
+  </svg>
+
+  <div class="masthead">
+    <h1><b>nuvia</b> — product film animatic</h1>
+    <span class="sub">16:9 · 30s · motion beats fully animated, live-action beats marked REC</span>
+  </div>
+
+  <div class="stage" id="stage">
+    <div class="hud"><span class="tc" id="hud-tc">00.0s</span><span class="bn" id="hud-bn">—</span></div>
+    <!-- Beat 1 — the pain: generic storage meter, no numbers, no brand -->
+    <div class="beat" id="b-pain">
+      <div class="pain-card">
+        <div class="pain-row">
+          <div class="pain-disk"></div>
+          <div class="pain-meta">
+            <div class="t">Storage</div>
+            <div class="s">Syncing to the cloud…</div>
+          </div>
+        </div>
+        <div class="pain-track"><div class="pain-fill" id="pain-fill"></div></div>
+        <div class="pain-warn" id="pain-warn">Storage almost full</div>
+      </div>
+    </div>
+
+    <!-- Beat 2 — lime "n" wipe -->
+    <div class="beat" id="b-wipe">
+      <div class="wipe-panel" id="wipe-panel">
+        <svg class="n" viewBox="0 0 2253.2 2253.2"><use href="#nmark" /></svg>
+      </div>
+    </div>
+
+    <!-- Beats 3-6 — REC placeholders (real screen recordings) -->
+    <div class="beat" id="b-splash">
+      <div class="rec">
+        <div class="rec-top"><span class="rec-badge">REC — SPLASH</span><span class="rec-dur">04.4–05.4 · 1.0s</span></div>
+        <div class="rec-title">Splash — "n" lockup + wordmark</div>
+        <div class="rec-note">Screen-record the real splash. No phone / QR / code on screen.</div>
+        <div class="rec-chips"><span class="chip">Restoring your session…</span></div>
+      </div>
+    </div>
+    <div class="beat" id="b-browse">
+      <div class="rec">
+        <div class="rec-top"><span class="rec-badge">REC — EXPLORER</span><span class="rec-dur">05.4–08.8 · 3.4s</span></div>
+        <div class="rec-title">Vault blooms in → browse</div>
+        <div class="rec-note">Toolbar reveal, click a Location, open a folder, breadcrumb updates.</div>
+        <div class="rec-chips"><span class="chip">Search Nuvia</span><span class="chip">Back / Fwd / Up · breadcrumb</span><span class="chip">New group…</span></div>
+      </div>
+    </div>
+    <div class="beat" id="b-upload">
+      <div class="rec">
+        <div class="rec-top"><span class="rec-badge">REC + MG — UPLOAD</span><span class="rec-dur">08.8–15.0 · 6.2s</span></div>
+        <div class="rec-title">Right-click → Upload to Nuvia</div>
+        <div class="rec-note">Record the shell menu + landing tile; lime trail is comped on top in post.</div>
+        <div class="rec-chips"><span class="chip">Upload to Nuvia</span></div>
+      </div>
+    </div>
+    <div class="beat" id="b-control">
+      <div class="rec">
+        <div class="rec-top"><span class="rec-badge">REC — CONTROL</span><span class="rec-dur">15.0–19.0 · 4.0s</span></div>
+        <div class="rec-title">Pause / resume + About disclosure</div>
+        <div class="rec-note">TransferProgressWindow pause→resume; 0.8s flash of Settings → About.</div>
+        <div class="rec-chips"><span class="chip disc">Nuvia is an unofficial local app. It uses the Telegram API and is not affiliated with Telegram.</span></div>
+      </div>
+    </div>
+
+    <!-- Beat 7 — hero: the meter strains, and never fills -->
+    <div class="beat" id="b-hero">
+      <div class="hero-stage">
+        <div class="hero-track">
+          <div class="hero-fill" id="hero-fill"><div class="hero-flow" id="hero-flow"></div></div>
+          <div class="hero-cap" id="hero-cap"></div>
+          <div class="hero-cap-label" id="hero-cap-label">FULL</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Beat 8 — end card -->
+    <div class="beat" id="b-end">
+      <svg class="end-n" id="end-n" viewBox="0 0 2253.2 2253.2"><use href="#nmark" /></svg>
+      <div class="end-word" id="end-word">nuvia</div>
+      <div class="end-tag" id="end-tag">The cloud that never fills up.</div>
+      <div class="end-disc" id="end-disc">Nuvia is an unofficial local app. It uses the Telegram API and is not affiliated with Telegram.</div>
+    </div>
+    <div class="guides">
+      <div class="guide-safe"></div>
+      <div class="guide-vert"></div>
+    </div>
+  </div>
+
+  <div class="markbar" id="markbar"></div>
+
+  <div class="transport">
+    <button id="play">▶ Play</button>
+    <button class="ghost" id="restart">⟲ Restart</button>
+    <span class="tc" id="tc">00.0 / 30.0s</span>
+    <input type="range" id="scrub" min="0" max="30" step="0.01" value="0" />
+    <button class="ghost" id="loop">Loop</button>
+    <button class="ghost" id="guides">Guides</button>
+    <button class="ghost" id="hudbtn">HUD</button>
+  </div>
+
+  <div class="legend">
+    <span><b>■</b> fully-animated mograph beat (deliverable)</span>
+    <span><b>▦</b> REC = real screen recording goes here (placeholder for timing)</span>
+  </div>
+
+  <script src="animatic.js"></script>
+</body>
+</html>

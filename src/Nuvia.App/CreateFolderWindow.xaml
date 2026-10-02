@@ -1,0 +1,57 @@
+<Window x:Class="Nuvia.App.CreateFolderWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="New folder"
+        Width="440"
+        SizeToContent="Height"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False"
+        Background="{StaticResource WindowBgBrush}">
+    <StackPanel Margin="20">
+        <TextBlock x:Name="HeadingText"
+                   Text="Create a folder"
+                   FontSize="16"
+                   FontWeight="SemiBold"
+                   Foreground="{StaticResource TextPrimaryBrush}"
+                   Margin="0,0,0,8" />
+        <TextBlock x:Name="DescriptionText"
+                   TextWrapping="Wrap"
+                   Foreground="{StaticResource TextSecondaryBrush}"
+                   FontSize="12"
+                   Margin="0,0,0,14"
+                   Text="Folders are a Nuvia-only way to organise your files. Telegram has no folders, so Nuvia hides a tiny invisible marker in each uploaded file's message — that is what lets your folders come back if you reinstall. Nothing is created on Telegram when you make a folder here." />
+
+        <TextBlock Text="Folder name" FontWeight="SemiBold" Margin="0,0,0,4"
+                   Foreground="{StaticResource TextPrimaryBrush}" />
+        <TextBox x:Name="NameBox"
+                 MaxLength="60"
+                 Padding="6,4"
+                 FontSize="13"
+                 TextChanged="NameBox_TextChanged" />
+        <TextBlock x:Name="ValidationText"
+                   Foreground="{StaticResource DangerTextBrush}"
+                   FontSize="11"
+                   Margin="0,4,0,0"
+                   Visibility="Collapsed"
+                   Text="Enter a folder name." />
+
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Margin="0,18,0,0">
+            <Button x:Name="CancelButton"
+                    Content="Cancel"
+                    IsCancel="True"
+                    Style="{StaticResource SecondaryButton}"
+                    MinWidth="96"
+                    Margin="0,0,8,0"
+                    Click="CancelButton_Click" />
+            <Button x:Name="ConfirmButton"
+                    Content="Create folder"
+                    IsDefault="True"
+                    Style="{StaticResource PrimaryButton}"
+                    MinWidth="96"
+                    Click="ConfirmButton_Click" />
+        </StackPanel>
+    </StackPanel>
+</Window>

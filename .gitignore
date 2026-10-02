@@ -1,0 +1,94 @@
+# .gitignore — Nuvia (Visual Studio / .NET / WPF / Inno Setup)
+
+## Build output
+bin/
+obj/
+
+## Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+## IDE
+.idea/
+*.swp
+*~
+
+## NuGet
+packages/
+*.nupkg
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+!**/[Pp]ackages/repositories.config
+
+## Publish & installer output
+publish/
+installer/Output/
+*.exe
+*.msi
+*.msp
+
+## Developer credential files
+*.pfx
+*.p12
+*.pem
+*.key
+*.snk
+*.cred
+*.credential
+
+## Runtime configuration (developer credentials — never commit)
+config.json
+**/config.json
+
+## Session files
+*.session
+session.dat
+*.session.dat
+
+## SQLite databases
+*.db
+*.db-wal
+*.db-shm
+
+## Logs
+logs/
+*.log
+
+## Local account data
+AppData/
+account.dat
+*.account.dat
+
+## OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+## User-specific
+*.rsuser
+[Pp]ublish/
+*.dotnetuser
+
+## Inno Setup temp
+[Setup]/tmp/
+
+## Build/publish trees (CI rebuilds these; never commit binaries)
+artifacts/
+build/
+
+## Brand exploration & tooling scratch, not part of the shipped app
+logos/
+logo-designer-skill/
+.icon-preview/
+
+## Editor/AI local state
+.claude/
+*.pdb
+
+## Local edit backups (scratch, never published)
+*.bak
+*.bak_*

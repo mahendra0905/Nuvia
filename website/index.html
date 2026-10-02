@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nuvia - The cloud that never fills up</title>
+  <meta name="description" content="Nuvia is a native Windows app that turns your Telegram account into a private, unlimited file vault. No storage caps, no Telegram Desktop." />
+
+  <!-- Brand favicon (real app icon) -->
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/nuvia-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/nuvia-16.png" />
+  <link rel="apple-touch-icon" href="assets/nuvia-256.png" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Nuvia - The cloud that never fills up" />
+  <meta property="og:description" content="A private, Telegram-backed file vault for Windows. No storage caps." />
+  <meta property="og:image" content="https://nuvia.pages.dev/assets/nuvia-256.png" />
+  <meta property="og:url" content="https://nuvia.pages.dev/" />
+  <meta property="og:site_name" content="Nuvia" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Nuvia - The cloud that never fills up" />
+  <meta name="twitter:description" content="A private, Telegram-backed file vault for Windows. No storage caps." />
+  <meta name="twitter:image" content="https://nuvia.pages.dev/assets/nuvia-256.png" />
+  <link rel="canonical" href="https://nuvia.pages.dev/" />
+  <meta property="og:type" content="website" />
+
+  <!-- Icons: Phosphor (allowed icon library, loaded from CDN) -->
+  <link rel="preconnect" href="https://unpkg.com" crossorigin />
+  <link rel="preconnect" href="https://cdn.simpleicons.org" crossorigin />
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Scroll progress rail (CSS scroll-driven; degrades to hidden) -->
+  <div class="scroll-rail" aria-hidden="true"><span class="scroll-rail__fill"></span></div>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- NAVIGATION -->
+  <header class="nav" id="site-top">
+    <div class="nav__inner">
+      <a class="brand" href="#site-top" aria-label="Nuvia home">
+        <img class="brand__tile" src="assets/nuvia-64.png" width="34" height="34" alt="" />
+        <span class="brand__word">nuvia</span>
+      </a>
+      <nav class="nav__links" aria-label="Primary">
+        <a href="#features">Features</a>
+        <a href="#how">How it works</a>
+        <a href="#privacy">Privacy</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <a class="btn btn--primary btn--sm magnetic" href="#download" aria-label="Download for Windows">
+        <i class="ph ph-download-simple" aria-hidden="true"></i>
+        <span class="btn__label">Download for Windows</span>
+      </a>
+    </div>
+  </header>
+  <main id="main">
+
+    <!-- HERO — a full-bleed 3D "data cloud": a WebGL field of lime light points
+         flows across the WHOLE section behind the headline and flies toward you
+         as you scroll (files streaming up into your Telegram cloud). The scene is
+         decorative (aria-hidden) and painted BEHIND the copy, so every word stays
+         readable with no JS and with motion disabled. See hero3d.js (three.js). -->
+    <section class="hero" id="hero">
+      <!-- Full-bleed 3D background: a living "data cloud" — a flowing field of
+           lime light points rendered in WebGL (three.js) that undulates on its
+           own and flies forward as you scroll. Decorative + progressive: if the
+           script or WebGL is unavailable, the copy below still reads perfectly
+           on the plain backdrop. -->
+      <div class="hero__scene" aria-hidden="true">
+        <canvas class="hero__canvas" id="hero-canvas"></canvas>
+        <div class="hero__fade"></div>
+      </div>
+
+      <div class="hero__fore">
+        <span class="hero__kicker">
+          <i class="ph ph-windows-logo" aria-hidden="true"></i>
+          Native Windows app · Telegram-backed
+        </span>
+        <h1 class="hero__title">
+          The cloud that <span class="hl">never fills up.</span>
+        </h1>
+        <p class="hero__sub">
+          Nuvia turns your Telegram account into a private file vault on Windows.
+          No storage caps, no Telegram Desktop.
+        </p>
+        <div class="hero__cta">
+          <a class="btn btn--primary btn--lg magnetic" href="#download">
+            <i class="ph ph-windows-logo" aria-hidden="true"></i>
+            Download for Windows
+          </a>
+          <a class="btn btn--ghost btn--lg" href="#how">
+            See how it works
+            <i class="ph ph-arrow-down" aria-hidden="true"></i>
+          </a>
+        </div>
+        <ul class="hero__facts">
+          <li><i class="ph ph-seal-check" aria-hidden="true"></i> Stored safely in your Telegram cloud</li>
+          <li><i class="ph ph-file-arrow-up" aria-hidden="true"></i> Up to 4&nbsp;GB per file, with Premium</li>
+          <li><i class="ph ph-lock-simple" aria-hidden="true"></i> Private index stays on your PC</li>
+        </ul>
+      </div>
+
+      <a class="hero__cue" href="#how" aria-label="Scroll to how it works">
+        <span>Scroll</span>
+        <span class="hero__mouse" aria-hidden="true"><span class="hero__wheel"></span></span>
+      </a>
+    </section>
+
+    <!-- MARQUEE value strip (honest claims, scrolls edge to edge) -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track">
+        <span>Never fills up <i class="ph ph-circle-fill"></i></span>
+        <span>Your Telegram cloud <i class="ph ph-circle-fill"></i></span>
+        <span>No Telegram Desktop <i class="ph ph-circle-fill"></i></span>
+        <span>Private local index <i class="ph ph-circle-fill"></i></span>
+        <span>Installs per user <i class="ph ph-circle-fill"></i></span>
+        <span>Never fills up <i class="ph ph-circle-fill"></i></span>
+        <span>Your Telegram cloud <i class="ph ph-circle-fill"></i></span>
+        <span>No Telegram Desktop <i class="ph ph-circle-fill"></i></span>
+        <span>Private local index <i class="ph ph-circle-fill"></i></span>
+        <span>Installs per user <i class="ph ph-circle-fill"></i></span>
+      </div>
+    </div>
+
+    <!-- FACTS BAND + honest disclosure -->
+    <section class="facts" data-animate>
+      <ul class="facts__row">
+        <li><i class="ph ph-windows-logo"></i><span>Native for <strong>Windows 10 and 11</strong></span></li>
+        <li><i class="ph ph-cloud-arrow-up"></i><span>Backed by <strong>your Telegram cloud</strong></span></li>
+        <li><i class="ph ph-database"></i><span>Index stays <strong>private on your PC</strong></span></li>
+      </ul>
+      <p class="facts__note">
+        Nuvia is an unofficial application. It uses the Telegram API and is not affiliated
+        with, endorsed by, or sponsored by Telegram.
+      </p>
+    </section>
+    <!-- BUILT ON (honest tech provenance, real logos) -->
+    <section class="builton" data-animate>
+      <p class="builton__label">Built on proven, boring technology</p>
+      <div class="builton__logos">
+        <i class="ph ph-windows-logo builton__glyph" role="img" aria-label="Windows"></i>
+        <img src="https://cdn.simpleicons.org/dotnet/5E6655" alt=".NET 8" height="26" loading="lazy" />
+        <img src="https://cdn.simpleicons.org/telegram/5E6655" alt="Telegram API" height="26" loading="lazy" />
+        <img src="https://cdn.simpleicons.org/sqlite/5E6655" alt="SQLite" height="26" loading="lazy" />
+      </div>
+    </section>
+
+    <!-- FEATURES (bento) -->
+    <section class="section" id="features">
+      <div class="section__head" data-animate>
+        <span class="eyebrow">What you get</span>
+        <h2 class="section__title">A <span class="hl">vault</span>, not a chat app.</h2>
+        <p class="section__lead">
+          Nuvia does one thing well: it stores your files on Telegram's cloud and keeps them
+          easy to find. Nothing more, nothing you did not ask for.
+        </p>
+      </div>
+
+      <div class="bento" data-reveal>
+        <article class="cell cell--feature cell--a">
+          <div class="cell__art">
+            <img src="assets/nuvia-256.png" width="96" height="96" alt="" />
+          </div>
+          <i class="ph ph-infinity cell__icon"></i>
+          <h3>Storage that never fills up</h3>
+          <p>Ride your Telegram account's cloud. Up to 2 GB per file free, or 4 GB with Telegram Premium.</p>
+        </article>
+
+        <article class="cell cell--b">
+          <i class="ph ph-app-window cell__icon"></i>
+          <h3>No Telegram Desktop</h3>
+          <p>Nuvia is one native window. You never open the chat client to store or fetch a file.</p>
+        </article>
+
+        <article class="cell cell--c cell--dots">
+          <i class="ph ph-hard-drives cell__icon"></i>
+          <h3>Private local index</h3>
+          <p>A SQLite list on your PC tracks what you uploaded. It never leaves the machine.</p>
+        </article>
+
+        <article class="cell cell--d">
+          <i class="ph ph-magnifying-glass cell__icon"></i>
+          <h3>Find and rename fast</h3>
+          <p>Search as you type. Rename a file's local label without touching the remote copy.</p>
+        </article>
+
+        <article class="cell cell--e">
+          <i class="ph ph-arrows-down-up cell__icon"></i>
+          <h3>Honest transfers</h3>
+          <p>One file at a time, clear states, and rate limits waited out instead of faked.</p>
+        </article>
+
+        <article class="cell cell--f cell--tint">
+          <i class="ph ph-shield-check cell__icon"></i>
+          <h3>Installs per user</h3>
+          <p>A lightweight installer sets Nuvia up for your account with no administrator prompt.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- SHOWCASE — alternating big-media rows; panels reveal on scroll -->
+    <section class="section showcase" id="showcase">
+      <div class="section__head section__head--center sr">
+        <span class="eyebrow">See it move</span>
+        <h2 class="section__title">Every file, the moment it <span class="hl">lands.</span></h2>
+      </div>
+
+      <div class="showcase__row">
+        <div class="showcase__copy sr">
+          <span class="showcase__step">STEP 01</span>
+          <h3>Send it up</h3>
+          <p>Pick a file and press upload. Nuvia streams it straight to your own Telegram cloud — up to 4 GB per file with Premium — one at a time, no fuss.</p>
+        </div>
+        <div class="showcase__media sr sr--img">
+          <div class="mini-win" aria-hidden="true">
+            <div class="mini-win__bar">
+              <span class="mini-win__word">nuvia</span>
+              <span class="mini-win__ctrls"><i class="ph ph-minus"></i><i class="ph ph-square"></i><i class="ph ph-x"></i></span>
+            </div>
+            <div class="mini-win__row"><i class="ph ph-arrow-line-up"></i><b>Uploading… winter-cut.mov</b><span>62%</span><i class="ph ph-spinner-gap ok"></i></div>
+            <div class="mini-win__row"><i class="ph ph-file-zip"></i><b>archive-2025.zip</b><span>840 MB</span><i class="ph ph-seal-check ok"></i></div>
+            <div class="mini-win__row"><i class="ph ph-file-pdf"></i><b>contract.pdf</b><span>2.4 MB</span><i class="ph ph-seal-check ok"></i></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="showcase__row showcase__row--rev">
+        <div class="showcase__copy sr">
+          <span class="showcase__step">STEP 02</span>
+          <h3>It just lands</h3>
+          <p>No folders to pick, no quota to watch. The file lives in your cloud and shows up in Nuvia's window — searchable the second it finishes.</p>
+        </div>
+        <div class="showcase__media sr sr--img">
+          <div class="mini-win" aria-hidden="true">
+            <div class="mini-win__bar">
+              <span class="mini-win__word">nuvia</span>
+              <span class="mini-win__ctrls"><i class="ph ph-minus"></i><i class="ph ph-square"></i><i class="ph ph-x"></i></span>
+            </div>
+            <div class="mini-win__row"><i class="ph ph-image"></i><b>trip.raw</b><span>24.1 MB</span><i class="ph ph-seal-check ok"></i></div>
+            <div class="mini-win__row"><i class="ph ph-film-slate"></i><b>edit-final.mov</b><span>1.8 GB</span><i class="ph ph-seal-check ok"></i></div>
+            <div class="mini-win__row"><i class="ph ph-file-doc"></i><b>notes.docx</b><span>318 KB</span><i class="ph ph-seal-check ok"></i></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="showcase__row">
+        <div class="showcase__copy sr">
+          <span class="showcase__step">STEP 03</span>
+          <h3>Find it in a keystroke</h3>
+          <p>Search as you type. Rename a file's local label to whatever makes sense to you — the copy sitting in Telegram stays exactly as it was.</p>
+        </div>
+        <div class="showcase__media sr sr--img">
+          <div class="mini-win" aria-hidden="true">
+            <div class="mini-win__bar">
+              <span class="mini-win__word">nuvia</span>
+              <span class="mini-win__ctrls"><i class="ph ph-magnifying-glass"></i></span>
+            </div>
+            <div class="mini-win__row"><i class="ph ph-file-pdf"></i><b>taxes-2024.pdf</b><span>1.1 MB</span><i class="ph ph-pencil-simple ok"></i></div>
+            <div class="mini-win__row"><i class="ph ph-image"></i><b>wedding-album.zip</b><span>3.2 GB</span><i class="ph ph-pencil-simple ok"></i></div>
+            <div class="mini-win__row"><i class="ph ph-music-notes"></i><b>demo-track.wav</b><span>58 MB</span><i class="ph ph-pencil-simple ok"></i></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS (stepped flow) — ink full-bleed band -->
+    <section class="section section--band section--ink" id="how">
+      <div class="section__inner">
+      <div class="section__head" data-animate>
+        <span class="eyebrow">How it works</span>
+        <h2 class="section__title">Three moves, then it is <span class="hl">just there.</span></h2>
+        <p class="section__lead">
+          No account creation, no api keys to paste. Nuvia signs in with the Telegram
+          account you already have.
+        </p>
+      </div>
+
+      <ol class="steps" data-reveal>
+        <li class="step">
+          <span class="step__node"><i class="ph ph-sign-in"></i></span>
+          <h3>Sign in with Telegram</h3>
+          <p>Enter your phone, the code Telegram sends you, and your two-step password if you set one. That is the whole login.</p>
+        </li>
+        <li class="step">
+          <span class="step__node"><i class="ph ph-upload-simple"></i></span>
+          <h3>Send a file up</h3>
+          <p>Pick a file and press upload. It lands in your Saved Messages, or in one private group you can create on your account.</p>
+        </li>
+        <li class="step">
+          <span class="step__node"><i class="ph ph-magnifying-glass"></i></span>
+          <h3>Find it whenever</h3>
+          <p>Your uploads show in a searchable list. Filter by name, then download any file back to your PC in a click.</p>
+        </li>
+      </ol>
+      </div>
+    </section>
+
+    <!-- HONEST STAT BAND (real facts only; count-up in app.js) -->
+    <section class="stats" aria-label="Nuvia by the numbers">
+      <div class="stats__grid" data-reveal>
+        <div class="stat">
+          <div class="stat__num">&#8734;</div>
+          <p class="stat__label">No storage cap added by Nuvia &mdash; it is your own Telegram cloud.</p>
+        </div>
+        <div class="stat">
+          <div class="stat__num" data-count="4" data-suffix=" GB">0</div>
+          <p class="stat__label">Per file with Telegram Premium (2&nbsp;GB free). Nuvia adds no limit of its own.</p>
+        </div>
+        <div class="stat">
+          <div class="stat__num" data-count="100" data-suffix="%">0</div>
+          <p class="stat__label">of your files stay in your own account. Nuvia keeps no copy.</p>
+        </div>
+        <div class="stat">
+          <div class="stat__num" data-count="0">0</div>
+          <p class="stat__label">Administrator prompts. Nuvia installs just for your user.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHY / STORAGE CEILING (comparison) — lime full-bleed band -->
+    <section class="section ceiling section--band section--lime" id="why">
+      <div class="section__inner">
+      <div class="ceiling__grid" data-animate>
+        <div class="ceiling__lead">
+          <h2 class="section__title">Other drives hand you a ceiling.</h2>
+          <p class="section__lead">
+            Consumer clouds start small and charge to grow. Nuvia rides storage you already
+            have and never asks you to top it up.
+          </p>
+          <a class="btn btn--primary magnetic" href="#download">
+            <i class="ph ph-windows-logo" aria-hidden="true"></i>
+            Download for Windows
+          </a>
+        </div>
+        <div class="ceiling__stat">
+          <p class="ceiling__kicker">Free tier headroom</p>
+          <p class="ceiling__big"><span class="accent">no cap</span></p>
+          <p class="ceiling__foot">
+            Your files sit in your own Telegram account. Nuvia adds no separate quota
+            and stores no copy of its own.
+          </p>
+        </div>
+      </div>
+      </div>
+    </section>
+    <!-- PRIVACY & HONESTY (2-col split) -->
+    <section class="section privacy" id="privacy">
+      <div class="privacy__grid">
+        <div class="privacy__intro" data-animate>
+          <span class="eyebrow">Built to be honest</span>
+          <h2 class="section__title">It reads <span class="hl">nothing</span> it does not need to.</h2>
+          <p class="section__lead">
+            Nuvia stores files and finds them again. It deliberately leaves the rest of your
+            Telegram account alone, and it tells you the truth when something cannot be done.
+          </p>
+        </div>
+        <ul class="principles" data-reveal>
+          <li>
+            <i class="ph ph-hard-drives"></i>
+            <div><h3>Your index stays local</h3><p>The list of what you uploaded lives in a file on your PC and is never sent anywhere.</p></div>
+          </li>
+          <li>
+            <i class="ph ph-eye-slash"></i>
+            <div><h3>No chat snooping</h3><p>Nuvia never browses your conversations, exports contacts, or sends messages on your behalf.</p></div>
+          </li>
+          <li>
+            <i class="ph ph-pencil-simple-slash"></i>
+            <div><h3>Local rename is local</h3><p>Renaming a file changes only its label on your PC. The remote message and file are untouched.</p></div>
+          </li>
+          <li>
+            <i class="ph ph-cursor-click"></i>
+            <div><h3>Nothing happens without a click</h3><p>No upload, no group, no message ever starts on its own. You act, then Nuvia acts.</p></div>
+          </li>
+          <li>
+            <i class="ph ph-trash-simple"></i>
+            <div><h3>Uninstall keeps your data</h3><p>Removing Nuvia leaves your local files in place unless you explicitly opt in to delete them.</p></div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- FAQ (accordion) -->
+    <section class="section faq" id="faq">
+      <div class="section__head section__head--center" data-animate>
+        <h2 class="section__title">Questions worth asking.</h2>
+      </div>
+      <div class="accordion" data-animate>
+        <details class="qa">
+          <summary>Is this an official Telegram app?<i class="ph ph-plus" aria-hidden="true"></i></summary>
+          <p>No. Nuvia is an independent, unofficial application that uses the Telegram API. It is not affiliated with, endorsed by, or sponsored by Telegram.</p>
+        </details>
+        <details class="qa">
+          <summary>Do I need to enter an api_id or api_hash?<i class="ph ph-plus" aria-hidden="true"></i></summary>
+          <p>No. Nuvia ships with what it needs to connect. You sign in with your normal Telegram phone number and login code, nothing else.</p>
+        </details>
+        <details class="qa">
+          <summary>How large a file can I store?<i class="ph ph-plus" aria-hidden="true"></i></summary>
+          <p>Telegram's own limits apply: up to 2 GB per file on a free account, or 4 GB with Telegram Premium. Nuvia does not add a limit of its own.</p>
+        </details>
+        <details class="qa">
+          <summary>Does deleting the app delete my files?<i class="ph ph-plus" aria-hidden="true"></i></summary>
+          <p>Uninstalling keeps your local data by default. Your files stay in your Telegram account either way. Nuvia never deletes remote files for you.</p>
+        </details>
+        <details class="qa">
+          <summary>Will it show every file already in my Telegram?<i class="ph ph-plus" aria-hidden="true"></i></summary>
+          <p>No. Nuvia lists only the files it uploaded from this PC. It does not scan or mirror your Telegram history.</p>
+        </details>
+      </div>
+    </section>
+    <!-- DOWNLOAD / FINAL CTA (centered) -->
+    <section class="section download" id="download">
+      <div class="download__card" data-animate>
+        <img class="download__icon" src="assets/nuvia-256.png" width="112" height="112" alt="Nuvia app icon" />
+        <h2 class="download__title">Give your files a home that never runs out.</h2>
+        <p class="download__sub">
+          One download, your Telegram login, and the vault is yours.
+        </p>
+        <!-- Official build: the newest PUBLISHED GitHub release asset. The same URL is the
+             downloadUrl in version.json, which the app reads for its update check. Hovering the
+             primary button reveals the two sources; touch devices show both outright, so the
+             picker is never hover-only. -->
+        <div class="dl-cta">
+          <a class="btn btn--primary btn--lg magnetic dl-cta__main" href="https://github.com/mahendra0905/Nuvia/releases/latest/download/Nuvia-Setup-1.0.0.exe">
+            <i class="ph ph-download-simple" aria-hidden="true"></i>
+            Download for Windows
+            <i class="ph ph-caret-down dl-cta__caret" aria-hidden="true"></i>
+          </a>
+          <div class="dl-cta__opts" role="group" aria-label="Choose a download source">
+            <a class="dl-opt" href="https://t.me/NuviaApp" target="_blank" rel="noopener">
+              <i class="ph ph-telegram-logo" aria-hidden="true"></i>
+              <span>Download from Telegram</span>
+            </a>
+            <a class="dl-opt" href="https://github.com/mahendra0905/Nuvia/releases/latest/download/Nuvia-Setup-1.0.0.exe">
+              <i class="ph ph-github-logo" aria-hidden="true"></i>
+              <span>Download from GitHub</span>
+            </a>
+          </div>
+        </div>
+        <p class="download__links">
+          <a href="https://github.com/mahendra0905/Nuvia/releases/latest" rel="noopener">Release notes &amp; SHA-256</a>
+        </p>
+        <p class="download__meta">
+          <i class="ph ph-windows-logo"></i> Windows 10 and 11, 64-bit
+          <span class="dot-sep"></span> Version 1.0.0
+          <span class="dot-sep"></span> No administrator prompt
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a class="brand" href="#site-top" aria-label="Nuvia home">
+            <img class="brand__tile" src="assets/nuvia-64.png" width="34" height="34" alt="" />
+            <span class="brand__word">nuvia</span>
+          </a>
+          <p class="footer__tag">The cloud that never fills up.</p>
+        </div>
+        <nav class="footer__nav" aria-label="Footer">
+          <div>
+            <h4>Product</h4>
+            <a href="#features">Features</a>
+            <a href="#how">How it works</a>
+            <a href="#why">Why Nuvia</a>
+          </div>
+          <div>
+            <h4>Trust</h4>
+            <a href="#privacy">Privacy</a>
+            <a href="#faq">FAQ</a>
+            <a href="#download">Download</a>
+          </div>
+          <div>
+            <h4>Community</h4>
+            <a href="https://t.me/Nuvia_Community" target="_blank" rel="noopener">Community group</a>
+            <a href="https://t.me/NuviaAppSupportBot" target="_blank" rel="noopener">Support bot</a>
+            <a href="https://github.com/mahendra0905/Nuvia" target="_blank" rel="noopener">GitHub</a>
+          </div>
+        </nav>
+      </div>
+      <div class="footer__legal">
+        <p class="footer__disclosure">
+          Nuvia is an unofficial application. It uses the Telegram API and is not affiliated
+          with, endorsed by, or sponsored by Telegram. Telegram is a trademark of its owners.
+        </p>
+        <p class="footer__copy">Copyright 2026 Nuvia. Your files stay in your account.</p>
+      </div>
+    </footer>
+
+  <script src="app.js" defer></script>
+  <!-- Hero 3D background (WebGL via three.js, ES module). Purely decorative and
+       fully optional — the page works and reads with this disabled or failed. -->
+  <script type="module" src="hero3d.js"></script>
+</body>
+</html>

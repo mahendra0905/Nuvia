@@ -1,0 +1,69 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:po="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+                    mc:Ignorable="po">
+
+    <!-- ==================================================================
+         Nuvia Theme Pack — Layer 1: raw value tokens.
+         Single source of truth for every colour VALUE, radius, type size
+         and brand asset. Nothing here references anything else, so this is
+         merged first; Brushes.xaml and Controls.xaml build on these keys.
+         Change a value HERE and it flows through the whole app.
+         ================================================================== -->
+
+    <!-- Core palette (grass-green accent on a clean light surface) -->
+    <Color x:Key="AccentColor">#7CB342</Color>
+    <Color x:Key="AccentHoverColor">#6BA233</Color>
+    <Color x:Key="AccentPressedColor">#5A9128</Color>
+    <Color x:Key="AccentTintColor">#F1F8E9</Color>
+    <Color x:Key="RowHoverColor">#F3F8EC</Color>
+    <Color x:Key="RowSelectedColor">#E4F0D4</Color>
+    <Color x:Key="RowSelectedBorderColor">#C5E1A5</Color>
+    <Color x:Key="WindowBgColor">#FFFFFF</Color>
+    <Color x:Key="StripColor">#F7F9F5</Color>
+    <Color x:Key="CardColor">#FFFFFF</Color>
+    <Color x:Key="DividerColor">#E7EAE3</Color>
+    <Color x:Key="TextPrimaryColor">#1F2419</Color>
+    <Color x:Key="TextSecondaryColor">#6B7280</Color>
+    <Color x:Key="OnAccentColor">#FFFFFF</Color>
+    <Color x:Key="DangerColor">#C62828</Color>
+
+    <!-- Extended state + brand colours (new; fill the gaps the palette lacked) -->
+    <Color x:Key="AccentDisabledColor">#BFD9A6</Color>    <!-- muted accent for disabled accent surfaces -->
+    <Color x:Key="TextDisabledColor">#A8AEA0</Color>      <!-- greyed-out text/glyphs -->
+    <Color x:Key="ControlDisabledBgColor">#F2F4F0</Color> <!-- disabled input / control fill -->
+    <Color x:Key="FieldBgColor">#FFFFFF</Color>           <!-- text / password / combo input fill -->
+    <Color x:Key="ScrimColor">#66000000</Color>           <!-- modal overlay dim (matches MainWindow) -->
+    <Color x:Key="DangerTextColor">#B00020</Color>        <!-- validation text (matches existing dialogs) -->
+    <Color x:Key="ErrorPanelBgColor">#FFF5F5</Color>      <!-- inline error panel fill -->
+    <Color x:Key="ErrorPanelBorderColor">#EF9A9A</Color>  <!-- inline error panel border -->
+    <Color x:Key="WordmarkColor">#A3E635</Color>          <!-- lime "nuvia" wordmark -->
+    <Color x:Key="ScrollThumbColor">#C9D2BE</Color>
+    <Color x:Key="ScrollThumbHoverColor">#AEBB9E</Color>
+
+    <!-- Corner radii (name by intent so future controls stay consistent) -->
+    <CornerRadius x:Key="RadiusSmall">4</CornerRadius>
+    <CornerRadius x:Key="RadiusMedium">6</CornerRadius>
+    <CornerRadius x:Key="RadiusLarge">8</CornerRadius>
+    <CornerRadius x:Key="RadiusPill">18</CornerRadius>
+
+    <!-- Type scale -->
+    <sys:Double x:Key="FontSizeCaption">11</sys:Double>
+    <sys:Double x:Key="FontSizeSmall">12</sys:Double>
+    <sys:Double x:Key="FontSizeBody">13</sys:Double>
+    <sys:Double x:Key="FontSizeSubtitle">15</sys:Double>
+    <sys:Double x:Key="FontSizeTitle">20</sys:Double>
+    <sys:Double x:Key="FontSizeDisplay">28</sys:Double>
+
+    <FontFamily x:Key="AppFontFamily">Segoe UI</FontFamily>
+    <FontFamily x:Key="AppIconFontFamily">Segoe Fluent Icons, Segoe MDL2 Assets</FontFamily>
+
+    <!-- Brand assets (frozen, shareable). Reference from any window as
+         Source="{StaticResource NuviaLogoImage}" instead of a raw path. -->
+    <BitmapImage x:Key="NuviaLogoImage" po:Freeze="True"
+                 UriSource="pack://application:,,,/Assets/n-logo.png" />
+    <BitmapImage x:Key="NuviaLoginIllustration" po:Freeze="True"
+                 UriSource="pack://application:,,,/Assets/login-illustration.png" />
+</ResourceDictionary>

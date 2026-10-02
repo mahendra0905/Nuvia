@@ -1,0 +1,50 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Colors.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <!-- ==================================================================
+         Nuvia Theme Pack — Layer 2: semantic brushes built from Layer-1
+         colours. Keeps the exact key names the app already uses so existing
+         markup is unaffected, and adds the brushes the pack introduces.
+         ================================================================== -->
+
+    <!-- Palette brushes (token-driven; identical values to the originals) -->
+    <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource AccentColor}" />
+    <SolidColorBrush x:Key="AccentHoverBrush" Color="{StaticResource AccentHoverColor}" />
+    <SolidColorBrush x:Key="AccentPressedBrush" Color="{StaticResource AccentPressedColor}" />
+    <SolidColorBrush x:Key="AccentTintBrush" Color="{StaticResource AccentTintColor}" />
+    <SolidColorBrush x:Key="RowHoverBrush" Color="{StaticResource RowHoverColor}" />
+    <SolidColorBrush x:Key="RowSelectedBrush" Color="{StaticResource RowSelectedColor}" />
+    <SolidColorBrush x:Key="RowSelectedBorderBrush" Color="{StaticResource RowSelectedBorderColor}" />
+    <SolidColorBrush x:Key="WindowBgBrush" Color="{StaticResource WindowBgColor}" />
+    <SolidColorBrush x:Key="StripBrush" Color="{StaticResource StripColor}" />
+    <SolidColorBrush x:Key="CardBrush" Color="{StaticResource CardColor}" />
+    <SolidColorBrush x:Key="DividerBrush" Color="{StaticResource DividerColor}" />
+    <SolidColorBrush x:Key="TextPrimaryBrush" Color="{StaticResource TextPrimaryColor}" />
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="{StaticResource TextSecondaryColor}" />
+    <SolidColorBrush x:Key="OnAccentBrush" Color="{StaticResource OnAccentColor}" />
+    <SolidColorBrush x:Key="DangerBrush" Color="{StaticResource DangerColor}" />
+
+    <!-- New semantic brushes introduced by the theme pack -->
+    <SolidColorBrush x:Key="AccentDisabledBrush" Color="{StaticResource AccentDisabledColor}" />
+    <SolidColorBrush x:Key="TextDisabledBrush" Color="{StaticResource TextDisabledColor}" />
+    <SolidColorBrush x:Key="ControlDisabledBgBrush" Color="{StaticResource ControlDisabledBgColor}" />
+    <SolidColorBrush x:Key="FieldBgBrush" Color="{StaticResource FieldBgColor}" />
+    <SolidColorBrush x:Key="ScrimBrush" Color="{StaticResource ScrimColor}" />
+    <SolidColorBrush x:Key="DangerTextBrush" Color="{StaticResource DangerTextColor}" />
+    <SolidColorBrush x:Key="ErrorPanelBgBrush" Color="{StaticResource ErrorPanelBgColor}" />
+    <SolidColorBrush x:Key="ErrorPanelBorderBrush" Color="{StaticResource ErrorPanelBorderColor}" />
+    <SolidColorBrush x:Key="WordmarkBrush" Color="{StaticResource WordmarkColor}" />
+    <SolidColorBrush x:Key="ScrollThumbBrush" Color="{StaticResource ScrollThumbColor}" />
+    <SolidColorBrush x:Key="ScrollThumbHoverBrush" Color="{StaticResource ScrollThumbHoverColor}" />
+    <SolidColorBrush x:Key="FocusBrush" Color="{StaticResource AccentColor}" />
+
+    <!-- Login side-panel brand gradient (was an inline literal in LoginWindow) -->
+    <LinearGradientBrush x:Key="BrandPanelBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="{StaticResource AccentTintColor}" Offset="0" />
+        <GradientStop Color="{StaticResource RowSelectedColor}" Offset="1" />
+    </LinearGradientBrush>
+</ResourceDictionary>

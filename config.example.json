@@ -1,0 +1,5 @@
+{
+  "_comment": "TEMPLATE — safe to commit. Copy this file to %LOCALAPPDATA%\\Nuvia\\config.json and replace api_id and api_hash with your OWN publisher credentials from https://my.telegram.org. The real config.json is git-ignored and must never hold committed credentials. Placeholder values below fail validation on purpose, so an un-edited copy shows a clear config error instead of a fake sign-in. See docs/CREDENTIALS.md.",
+  "api_id": 0,
+  "api_hash": "replace-with-your-32-char-hex-api-hash"
+}

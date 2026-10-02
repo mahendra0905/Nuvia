@@ -1,0 +1,256 @@
+/* ==========================================================================
+   Nuvia — product-film ANIMATIC (marketing collateral, NOT the WPF product).
+   Pure-mograph beats (1 pain meter, 2 lime "n" wipe, 7 never-fills, 8 end card)
+   are fully animated here; the live-action beats (3-6) are labelled REC
+   placeholders so the full 30s pacing is previewable before shooting.
+   Palette + script fallback mirror website/styles.css. Native CSS only.
+   ========================================================================== */
+@font-face {
+  font-family: "Dancing Script";
+  src: url("../assets/fonts/DancingScript-Variable.woff2") format("woff2");
+  font-weight: 400 700; font-style: normal; font-display: swap;
+}
+
+:root {
+  --lime:   #A3E635;   /* wordmark + hero fill */
+  --lime-2: #B4F04F;
+  --grass:  #7CB342;   /* accent */
+  --ink:    #10140A;   /* near-black film canvas */
+  --ink-2:  #171C0E;
+  --on-lime:#19210E;
+
+  /* Win11-light surfaces for the pain-meter card */
+  --w-bg:   #FFFFFF;
+  --w-panel:#F6F8F3;
+  --w-line: #E7EAE3;
+  --w-text: #1C2217;
+  --w-muted:#5E6655;
+
+  --warn:   #E5484D;   /* "almost full" red (pain only) */
+  --amber:  #E6A700;
+
+  --font-sans: "Segoe UI Variable", "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+  --font-script: "Segoe Script", "Dancing Script", "Brush Script MT", cursive;
+  --font-mono: "Cascadia Code", Consolas, ui-monospace, monospace;
+
+  /* Easing tokens (from the motion-design system) */
+  --ease-out-quart: cubic-bezier(.165, .84, .44, 1);
+  --ease-out-expo:  cubic-bezier(.19, 1, .22, 1);
+}
+
+* { box-sizing: border-box; margin: 0; }
+html, body { height: 100%; }
+body {
+  background: #0b0d07;
+  color: #e8ecd9;
+  font-family: var(--font-sans);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding: 22px 18px 32px;
+  min-height: 100%;
+}
+
+.masthead { width: 100%; max-width: 1180px; display: flex; align-items: baseline; gap: 12px; }
+.masthead h1 { font-size: 15px; font-weight: 600; letter-spacing: .02em; }
+.masthead h1 b { color: var(--lime); font-weight: 600; }
+.masthead .sub { font-size: 12px; color: #9aa488; }
+
+/* ---------- The film frame ---------- */
+.stage {
+  position: relative;
+  width: 100%;
+  max-width: 1180px;
+  aspect-ratio: 16 / 9;
+  background: var(--ink);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 30px 80px -30px rgba(0,0,0,.8), 0 0 0 1px rgba(255,255,255,.05);
+  container-type: size;             /* beats size their type in cqh units */
+}
+
+/* Each beat fills the frame; opacity is driven from JS. */
+.beat {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  will-change: opacity;
+}
+
+/* ---------- Beat 1 — the pain: a generic storage meter creeping to Full ----- */
+/* Deliberately UNBRANDED + NO numbers (accuracy guardrail). */
+#b-pain { background: radial-gradient(120% 120% at 50% 30%, #20170f 0%, #0b0d07 70%); }
+.pain-card {
+  width: 56cqh; max-width: 70cqw;
+  background: var(--w-bg);
+  border: 1px solid var(--w-line);
+  border-radius: 3cqh;
+  padding: 4.2cqh 4.6cqh;
+  box-shadow: 0 2cqh 6cqh -2cqh rgba(0,0,0,.5);
+  color: var(--w-text);
+}
+.pain-row { display: flex; align-items: center; gap: 2.4cqh; }
+.pain-disk {
+  width: 7.6cqh; height: 7.6cqh; border-radius: 1.4cqh; flex: none;
+  background: linear-gradient(180deg, #d9dfd0, #c2c9b6);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.06);
+}
+.pain-meta { flex: 1; }
+.pain-meta .t { font-size: 2.9cqh; font-weight: 600; }
+.pain-meta .s { font-size: 2.1cqh; color: var(--w-muted); margin-top: .3cqh; }
+.pain-track {
+  margin-top: 3.4cqh; height: 1.9cqh; border-radius: 999px;
+  background: #e9ece2; overflow: hidden;
+}
+.pain-fill { height: 100%; width: 8%; border-radius: 999px; background: var(--grass); }
+.pain-warn {
+  margin-top: 2.2cqh; font-size: 2.1cqh; font-weight: 600; color: var(--warn);
+  opacity: 0; display: flex; align-items: center; gap: 1cqh;
+}
+.pain-warn::before { content: "!"; display: inline-grid; place-items: center;
+  width: 2.6cqh; height: 2.6cqh; border-radius: 50%; background: var(--warn); color: #fff;
+  font-size: 1.8cqh; }
+
+/* ---------- Beat 2 — lime "n" wipe ---------------------------------------- */
+#b-wipe { background: var(--ink); }
+.wipe-panel {
+  position: absolute; inset: 0;
+  background: linear-gradient(100deg, var(--lime) 0%, var(--lime-2) 100%);
+  transform: translateX(-100%);
+  display: flex; align-items: center; justify-content: flex-end;
+  padding-right: 8cqw;
+}
+.wipe-panel .n { width: 18cqh; height: 18cqh; fill: var(--on-lime); }
+
+/* ---------- Beats 3-6 — REC (screen-recording) placeholders --------------- */
+.rec {
+  width: 82cqw; height: 72cqh;
+  border: 2px dashed rgba(163,230,53,.5);
+  border-radius: 2.4cqh;
+  background:
+    repeating-linear-gradient(45deg, rgba(255,255,255,.015) 0 14px, transparent 14px 28px),
+    #12160c;
+  display: flex; flex-direction: column; gap: 2.4cqh;
+  padding: 4cqh 4.6cqh;
+}
+.rec-top { display: flex; align-items: center; gap: 1.6cqh; }
+.rec-badge {
+  font-family: var(--font-mono); font-size: 1.9cqh; font-weight: 700; letter-spacing: .08em;
+  color: var(--warn); display: inline-flex; align-items: center; gap: 1cqh;
+}
+.rec-badge::before { content: ""; width: 1.7cqh; height: 1.7cqh; border-radius: 50%;
+  background: var(--warn); box-shadow: 0 0 0 .5cqh rgba(229,72,77,.25); }
+.rec-dur { margin-left: auto; font-family: var(--font-mono); font-size: 1.8cqh; color: #7f8a6b; }
+.rec-title { font-size: 4.2cqh; font-weight: 650; color: #eef3e3; line-height: 1.1; }
+.rec-note { font-size: 2.2cqh; color: #9aa488; max-width: 60cqw; }
+.rec-chips { margin-top: auto; display: flex; flex-wrap: wrap; gap: 1.4cqh; }
+.chip {
+  font-size: 2cqh; padding: .9cqh 2cqh; border-radius: 999px;
+  background: rgba(163,230,53,.12); border: 1px solid rgba(163,230,53,.4); color: var(--lime);
+  font-weight: 600;
+}
+.chip.disc { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.18);
+  color: #c9d2b6; font-weight: 500; }
+
+/* ---------- Beat 7 — hero: the meter strains, and never fills -------------- */
+#b-hero {
+  background: radial-gradient(120% 120% at 50% 50%, #16200a 0%, var(--ink) 70%);
+  flex-direction: column; gap: 4cqh;
+}
+.hero-stage { position: relative; width: 70cqw; display: flex; flex-direction: column; align-items: center; }
+.hero-track {
+  position: relative; width: 100%; height: 7cqh; border-radius: 999px;
+  background: rgba(255,255,255,.07); overflow: visible;
+}
+.hero-fill {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 8%;
+  border-radius: 999px; overflow: hidden;
+  background: linear-gradient(90deg, var(--grass), var(--lime), var(--lime-2));
+  box-shadow: 0 0 4cqh rgba(163,230,53,.55);
+}
+.hero-flow {                      /* travelling sheen = "endless" flow */
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.5), transparent);
+  background-size: 40% 100%; background-repeat: no-repeat;
+}
+.hero-cap {                       /* the "FULL" ceiling that dissolves */
+  position: absolute; right: 0; top: -2.4cqh; bottom: -2.4cqh; width: .7cqh;
+  background: var(--warn); border-radius: 999px;
+}
+.hero-cap-label {
+  position: absolute; right: 0; top: -5.4cqh; transform: translateX(40%);
+  font-size: 2cqh; font-weight: 700; letter-spacing: .1em; color: var(--warn);
+}
+.hero-caption { font-size: 2.6cqh; color: #c9d2b6; opacity: 0; }
+
+/* ---------- Beat 8 — end card: wordmark + tagline + disclosure ------------- */
+#b-end { background: radial-gradient(120% 120% at 50% 42%, #1a240d 0%, var(--ink) 72%);
+  flex-direction: column; gap: 3cqh; }
+.end-n { width: 15cqh; height: 15cqh; opacity: 0; fill: var(--lime); }
+.end-word {
+  font-family: var(--font-script); color: var(--lime);
+  font-size: 15cqh; line-height: .9; opacity: 0;
+  text-shadow: 0 0 6cqh rgba(163,230,53,.35);
+}
+.end-tag { font-size: 3.4cqh; color: #e8ecd9; font-weight: 400; opacity: 0; letter-spacing: .01em; }
+.end-disc {
+  margin-top: 2cqh; max-width: 64cqw; text-align: center;
+  font-size: 1.9cqh; line-height: 1.5; color: #8f9a7c; opacity: 0;
+}
+
+/* ---------- In-frame HUD (timecode + beat name) --------------------------- */
+.hud {
+  position: absolute; left: 2cqh; top: 2cqh; z-index: 20;
+  display: flex; gap: 1cqh; align-items: center;
+  font-family: var(--font-mono); font-size: 1.9cqh;
+  color: #cdd6ba; background: rgba(0,0,0,.4); backdrop-filter: blur(6px);
+  padding: .8cqh 1.4cqh; border-radius: 1cqh; border: 1px solid rgba(255,255,255,.08);
+}
+.hud .tc { color: var(--lime); font-weight: 700; }
+.hud .bn { color: #aeb89a; }
+.stage.no-hud .hud { display: none; }
+
+/* ---------- Guides: title-safe + 9:16 crop -------------------------------- */
+.guides { position: absolute; inset: 0; z-index: 15; pointer-events: none; display: none; }
+.stage.guides-on .guides { display: block; }
+.guide-safe { position: absolute; inset: 5%; border: 1px dashed rgba(255,255,255,.35); border-radius: 4px; }
+.guide-vert {
+  position: absolute; top: 0; bottom: 0; left: 50%; width: calc(9 / 16 * 100% * 9 / 16);
+  transform: translateX(-50%);
+  border-left: 2px solid rgba(163,230,53,.8); border-right: 2px solid rgba(163,230,53,.8);
+  background: rgba(163,230,53,.06);
+}
+.guide-vert::after { content: "9:16 crop"; position: absolute; top: 6px; left: 50%;
+  transform: translateX(-50%); font: 700 11px var(--font-mono); color: var(--lime); }
+
+/* ---------- Transport ----------------------------------------------------- */
+.transport {
+  width: 100%; max-width: 1180px;
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  background: #12160c; border: 1px solid rgba(255,255,255,.07);
+  border-radius: 12px; padding: 12px 16px;
+}
+.transport button {
+  font: 600 13px var(--font-sans); color: var(--on-lime);
+  background: var(--lime); border: 0; border-radius: 999px; padding: 8px 16px; cursor: pointer;
+}
+.transport button.ghost { background: transparent; color: #cdd6ba; border: 1px solid rgba(255,255,255,.16); }
+.transport button.ghost.active { color: var(--lime); border-color: var(--lime); }
+.transport .tc { font-family: var(--font-mono); font-size: 13px; color: var(--lime); min-width: 92px; }
+.transport input[type=range] { flex: 1; min-width: 240px; accent-color: var(--lime); cursor: pointer; }
+.markbar { width: 100%; max-width: 1180px; position: relative; height: 26px; }
+.markbar .seg {
+  position: absolute; top: 0; height: 26px; border-radius: 5px; font: 600 10px var(--font-mono);
+  color: #c9d2b6; display: flex; align-items: center; justify-content: center; overflow: hidden;
+  border: 1px solid rgba(255,255,255,.08);
+}
+.markbar .seg.mg  { background: rgba(163,230,53,.18); color: var(--lime); border-color: rgba(163,230,53,.4); }
+.markbar .seg.rec { background: rgba(255,255,255,.05); }
+.markbar .play { position: absolute; top: -3px; width: 2px; height: 32px; background: #fff; z-index: 5; }
+.legend { width: 100%; max-width: 1180px; font-size: 12px; color: #8f9a7c; display: flex; gap: 16px; flex-wrap: wrap; }
+.legend b { color: var(--lime); font-weight: 600; }

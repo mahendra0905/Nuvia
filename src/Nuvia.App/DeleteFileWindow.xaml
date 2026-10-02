@@ -1,0 +1,78 @@
+<Window x:Class="Nuvia.App.DeleteFileWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Delete file"
+        Width="460"
+        SizeToContent="Height"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False"
+        Background="{StaticResource WindowBgBrush}">
+    <StackPanel Margin="20">
+        <TextBlock x:Name="HeaderText"
+                   Text="Delete this file"
+                   FontSize="16"
+                   FontWeight="SemiBold"
+                   Margin="0,0,0,8"
+                   Foreground="{StaticResource TextPrimaryBrush}"
+                   TextWrapping="Wrap" />
+        <TextBlock x:Name="IntroText"
+                   TextWrapping="Wrap"
+                   Foreground="{StaticResource TextSecondaryBrush}"
+                   FontSize="12"
+                   Margin="0,0,0,14"
+                   Text="Choose what to delete. Removing it from Nuvia only clears the local index entry; your file stays in Telegram. Deleting everywhere also removes the message from Telegram and cannot be undone." />
+
+        <RadioButton x:Name="LocalOnlyRadio"
+                     GroupName="DeleteScope"
+                     IsChecked="True"
+                     Margin="0,0,0,10">
+            <StackPanel>
+                <TextBlock Text="Remove from Nuvia only" FontWeight="SemiBold" />
+                <TextBlock x:Name="LocalOnlyDesc"
+                           TextWrapping="Wrap"
+                           Foreground="{StaticResource TextSecondaryBrush}"
+                           FontSize="11"
+                           Text="Drops the entry from Nuvia's local list. The file remains in your Telegram storage and can be indexed again later." />
+            </StackPanel>
+        </RadioButton>
+
+        <RadioButton x:Name="EverywhereRadio"
+                     GroupName="DeleteScope"
+                     Margin="0,0,0,4">
+            <StackPanel>
+                <TextBlock Text="Delete everywhere (irreversible)" FontWeight="SemiBold" Foreground="{StaticResource DangerTextBrush}" />
+                <TextBlock x:Name="EverywhereDesc"
+                           TextWrapping="Wrap"
+                           Foreground="{StaticResource TextSecondaryBrush}"
+                           FontSize="11"
+                           Text="Permanently deletes the message from Telegram and removes the local entry. This cannot be undone." />
+            </StackPanel>
+        </RadioButton>
+
+        <TextBlock x:Name="RemoteNote"
+                   Foreground="{StaticResource DangerTextBrush}"
+                   FontSize="11"
+                   TextWrapping="Wrap"
+                   Margin="0,8,0,0"
+                   Visibility="Collapsed" />
+
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Margin="0,18,0,0">
+            <Button x:Name="CancelButton"
+                    Content="Cancel"
+                    IsCancel="True"
+                    Style="{StaticResource SecondaryButton}"
+                    MinWidth="96"
+                    Margin="0,0,8,0"
+                    Click="CancelButton_Click" />
+            <Button x:Name="DeleteButton"
+                    Content="Delete"
+                    IsDefault="True"
+                    Style="{StaticResource PrimaryButton}"
+                    MinWidth="96"
+                    Click="DeleteButton_Click" />
+        </StackPanel>
+    </StackPanel>
+</Window>

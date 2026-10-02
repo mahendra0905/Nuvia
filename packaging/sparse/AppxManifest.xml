@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Nuvia — sparse package manifest (app identity for the unpackaged Win32 app).
+
+  Purpose: give Nuvia a package identity so its native shell extension
+  (NuviaShellExt.dll, CLSID {32687C4B-2D15-4FB1-8F7D-54C3CC3A423D}) appears in the
+  MODERN Windows 11 top-level right-click menu — "Upload to Nuvia" with a flyout —
+  exactly like PDFelement / WinRAR / PowerToys entries.
+
+  The package itself contains ONLY this manifest + the logo assets. The real files
+  (Nuvia.exe, NuviaShellExt.dll) live at the EXTERNAL LOCATION — the app's install
+  folder ({localappdata}\Programs\Nuvia) — hence uap10:AllowExternalContent + the
+  -ExternalLocation argument used at registration time. No product logic lives here.
+-->
+<Package
+  xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  xmlns:uap10="http://schemas.microsoft.com/appx/manifest/uap/windows10/10"
+  xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+  xmlns:com="http://schemas.microsoft.com/appx/manifest/com/windows10"
+  xmlns:desktop4="http://schemas.microsoft.com/appx/manifest/desktop/windows10/4"
+  xmlns:desktop5="http://schemas.microsoft.com/appx/manifest/desktop/windows10/5"
+  IgnorableNamespaces="uap uap10 rescap com desktop4 desktop5">
+
+  <!-- Publisher MUST match the signing certificate subject. For dev/test the self-signed
+       cert is created with subject "CN=Nuvia" (see packaging\build-shellext.ps1). -->
+  <Identity
+    Name="Nuvia.ShellExtension"
+    Publisher="CN=Nuvia"
+    Version="1.0.0.0"
+    ProcessorArchitecture="x64" />
+
+  <Properties>
+    <DisplayName>Nuvia</DisplayName>
+    <PublisherDisplayName>Nuvia</PublisherDisplayName>
+    <Logo>Assets\StoreLogo.png</Logo>
+    <uap10:AllowExternalContent>true</uap10:AllowExternalContent>
+  </Properties>
+
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.19041.0" MaxVersionTested="10.0.22621.0" />
+  </Dependencies>
+
+  <Resources>
+    <Resource Language="en-us" />
+  </Resources>
+
+  <Capabilities>
+    <rescap:Capability Name="runFullTrust" />
+  </Capabilities>
+
+  <Applications>
+    <!-- Executable resolves against the external location (the install folder). The app is
+         launched by the handler via a plain CreateProcess, so it runs unpackaged; this entry
+         exists only to host the shell-extension registration. AppListEntry="none" keeps it out
+         of Start (Inno already creates the Start-menu shortcut). -->
+    <Application
+      Id="Nuvia"
+      Executable="Nuvia.exe"
+      EntryPoint="Windows.FullTrustApplication"
+      uap10:RuntimeBehavior="packagedClassicApp"
+      uap10:TrustLevel="mediumIL">
+      <uap:VisualElements
+        DisplayName="Nuvia"
+        Description="The cloud that never fills up."
+        BackgroundColor="transparent"
+        Square150x150Logo="Assets\Square150x150Logo.png"
+        Square44x44Logo="Assets\Square44x44Logo.png"
+        AppListEntry="none" />
+
+      <Extensions>
+        <!-- Register the in-process COM class that implements IExplorerCommand. -->
+        <com:Extension Category="windows.comServer">
+          <com:ComServer>
+            <com:SurrogateServer DisplayName="Nuvia Context Menu">
+              <com:Class Id="32687C4B-2D15-4FB1-8F7D-54C3CC3A423D"
+                         Path="NuviaShellExt.dll"
+                         ThreadingModel="STA" />
+            </com:SurrogateServer>
+          </com:ComServer>
+        </com:Extension>
+
+        <!-- Bind the handler to the right-click menu of ALL files (Type="*"). Directories and
+             the folder background are deliberately NOT included (files-only scope). -->
+        <desktop4:Extension Category="windows.fileExplorerContextMenus">
+          <desktop4:FileExplorerContextMenus>
+            <desktop5:ItemType Type="*">
+              <desktop5:Verb Id="Nuvia" Clsid="32687C4B-2D15-4FB1-8F7D-54C3CC3A423D" />
+            </desktop5:ItemType>
+          </desktop4:FileExplorerContextMenus>
+        </desktop4:Extension>
+      </Extensions>
+    </Application>
+  </Applications>
+</Package>

@@ -1,0 +1,220 @@
+# Trusted release packaging for Nuvia — TAG-TRIGGERED and MANUALLY APPROVED.
+#
+# SCOPE (Phase 8, part 2): produce the signed-off release artifacts (installer + checksum) from an
+# explicitly approved version tag. This is the ONLY workflow that touches production publisher
+# credentials, and it is isolated from untrusted code on purpose:
+#
+#   * It triggers ONLY on version tags (v*.*.*) pushed to this repository. Pull requests — including
+#     from forks — cannot trigger it and cannot read its secrets.
+#   * It runs in the protected GitHub Environment "release". Configure that environment with required
+#     reviewers so a human must approve each run before the job starts and before any secret is
+#     exposed. That approval IS the "explicitly approved version tag" gate.
+#   * Credentials come from Environment secrets (NUVIA_API_ID / NUVIA_API_HASH). They are passed to
+#     the Inno Setup compiler via environment variables (not on a visible command line) and are never
+#     echoed. GitHub additionally masks secret values in logs.
+#
+# It publishes a SELF-CONTAINED win-x64 build (NOT single-file), builds WITHOUT PDBs so no symbol
+# files are produced or shipped, compiles the installer with a pinned Inno Setup 6 toolchain,
+# generates a SHA-256 checksum, and creates a DRAFT GitHub release. The release is left as a DRAFT on
+# purpose: a maintainer must run the manual Windows acceptance checks (docs/CI_RELEASE.md) and then
+# publish it by hand. A green run here is NOT proof that the WPF UI, the installer UX, or a
+# clean-machine install work — those are all manual.
+#
+# The installer ships UNSIGNED. Code signing is not configured for this project. Integrity is
+# verifiable out-of-band via the published SHA-256 checksum.
+#
+# Third-party actions are pinned to full commit SHAs; the version each is expected to match is in a
+# trailing comment. Verify these SHAs before trusting them (see docs/CI_RELEASE.md).
+
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+# Least privilege: only the token permission needed to create the draft release.
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  package:
+    name: Package signed-off release (draft)
+    runs-on: windows-latest
+
+    # Protected environment: require reviewers here so secrets are unreachable until a human approves.
+    environment: release
+
+    defaults:
+      run:
+        shell: pwsh
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Set up .NET 8 SDK
+        uses: actions/setup-dotnet@87b7050bc53ea08284295505d98d2aa94301e852 # v4.0.1
+        with:
+          dotnet-version: '8.0.x'
+
+      # ---- Version agreement: git tag == csproj <Version> == installer MyAppVersion -------------
+      - name: Validate tag / assembly / installer versions agree
+        run: |
+          $ErrorActionPreference = 'Stop'
+
+          # Tag looks like refs/tags/v1.0.0 -> take "1.0.0".
+          $tag = "${{ github.ref_name }}"
+          $tagVersion = $tag.TrimStart('v')
+          Write-Host "Tag version:       $tagVersion"
+
+          # csproj <Version>
+          [xml]$csproj = Get-Content '.\src\Nuvia.App\Nuvia.App.csproj'
+          $csprojVersion = ($csproj.Project.PropertyGroup.Version | Where-Object { $_ }) -as [string]
+          $csprojVersion = $csprojVersion.Trim()
+          Write-Host "csproj <Version>:  $csprojVersion"
+
+          # installer MyAppVersion (#define MyAppVersion "1.0.0")
+          $issText = Get-Content '.\installer\Nuvia.iss' -Raw
+          $m = [regex]::Match($issText, '#define\s+MyAppVersion\s+"([^"]+)"')
+          if (-not $m.Success) { throw 'Could not find MyAppVersion in installer\Nuvia.iss' }
+          $issVersion = $m.Groups[1].Value
+          Write-Host "installer version: $issVersion"
+
+          if ($tagVersion -ne $csprojVersion -or $tagVersion -ne $issVersion) {
+            throw "Version mismatch. tag=$tagVersion csproj=$csprojVersion installer=$issVersion. " +
+                  "Align the git tag, <Version> in Nuvia.App.csproj, and MyAppVersion in Nuvia.iss."
+          }
+
+          # Expose for later steps.
+          "VERSION=$tagVersion" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+
+      - name: Restore
+        run: dotnet restore Nuvia.sln
+
+      - name: Build (Release)
+        run: dotnet build Nuvia.sln -c Release --no-restore
+
+      # No account login / no network upload test in CI — only the network-free unit tests run.
+      - name: Test (Release)
+        run: dotnet test Nuvia.sln -c Release --no-build --verbosity normal
+
+      # Self-contained win-x64, NOT single-file. DebugType=none / DebugSymbols=false => no PDBs are
+      # produced, so no symbols can be shipped or leak anything. Only the app project is published.
+      - name: Publish self-contained win-x64 (no single-file, no PDBs)
+        run: |
+          dotnet publish .\src\Nuvia.App\Nuvia.App.csproj `
+            -c Release `
+            -r win-x64 `
+            --self-contained true `
+            -p:PublishSingleFile=false `
+            -p:PublishTrimmed=false `
+            -p:DebugType=none `
+            -p:DebugSymbols=false `
+            -o .\artifacts\publish\win-x64
+
+      - name: Verify published assembly version matches the tag
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $dll = Get-Item '.\artifacts\publish\win-x64\Nuvia.dll'
+          $productVersion = $dll.VersionInfo.ProductVersion
+          $fileVersion = $dll.VersionInfo.FileVersion
+          Write-Host "Nuvia.dll ProductVersion=$productVersion FileVersion=$fileVersion (tag=$env:VERSION)"
+          # ProductVersion may carry build metadata (e.g. "1.0.0+abc"); compare the leading core.
+          $core = ($productVersion -split '\+')[0]
+          if ($core -ne $env:VERSION) {
+            throw "Published assembly ProductVersion ($productVersion) does not match tag ($env:VERSION)."
+          }
+          # Belt and suspenders: no PDBs should have been produced.
+          $pdbs = Get-ChildItem '.\artifacts\publish\win-x64' -Filter *.pdb -Recurse -ErrorAction SilentlyContinue
+          if ($pdbs) { throw "Unexpected PDB(s) in publish output: $($pdbs.FullName -join ', ')" }
+
+      # Pin the Inno Setup 6 toolchain to an exact version rather than "latest".
+      - name: Install Inno Setup 6 (pinned)
+        run: choco install innosetup --version=6.2.2 -y --no-progress
+
+      - name: Locate ISCC
+        run: |
+          $iscc = 'C:\Program Files (x86)\Inno Setup 6\ISCC.exe'
+          if (-not (Test-Path $iscc)) { throw "ISCC.exe not found at $iscc" }
+          "ISCC=$iscc" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+
+      # Compile the installer WITH credential injection. The api_id/api_hash are read from Environment
+      # secrets via env vars and referenced by name; they are never written into the command text or
+      # echoed. GitHub also masks these values in any log output.
+      - name: Compile installer (inject credentials, never printed)
+        env:
+          MY_API_ID: ${{ secrets.NUVIA_API_ID }}
+          MY_API_HASH: ${{ secrets.NUVIA_API_HASH }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          if ([string]::IsNullOrWhiteSpace($env:MY_API_ID) -or [string]::IsNullOrWhiteSpace($env:MY_API_HASH)) {
+            throw 'Release secrets NUVIA_API_ID / NUVIA_API_HASH are not set on the "release" environment.'
+          }
+          $publishDir = (Resolve-Path '.\artifacts\publish\win-x64').Path
+          # Values come from $env:* (masked); they are not embedded in this script's visible text.
+          & "$env:ISCC" `
+            "/DPublishDir=$publishDir" `
+            "/DMyApiId=$($env:MY_API_ID)" `
+            "/DMyApiHash=$($env:MY_API_HASH)" `
+            '.\installer\Nuvia.iss'
+          if ($LASTEXITCODE -ne 0) { throw "ISCC failed with exit code $LASTEXITCODE" }
+
+      - name: Verify installer produced
+        run: |
+          $exe = ".\artifacts\installer\Nuvia-Setup-$env:VERSION.exe"
+          if (-not (Test-Path $exe)) { throw "Installer not found: $exe" }
+          "SETUP_EXE=$exe" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+
+      - name: Generate SHA-256 checksum
+        run: |
+          $exe = "$env:SETUP_EXE"
+          $hash = (Get-FileHash -Algorithm SHA256 -Path $exe).Hash.ToLower()
+          $name = Split-Path $exe -Leaf
+          $line = "$hash  $name"
+          $sha = "$exe.sha256"
+          $line | Out-File -FilePath $sha -Encoding ascii -NoNewline
+          Write-Host $line
+          "SETUP_SHA=$sha" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+
+      # Upload ONLY the installer and its checksum — never the publish tree, source, or any config.
+      - name: Upload build artifacts (installer + checksum)
+        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
+        with:
+          name: nuvia-installer-${{ env.VERSION }}
+          path: |
+            ${{ env.SETUP_EXE }}
+            ${{ env.SETUP_SHA }}
+          if-no-files-found: error
+          retention-days: 30
+
+      # Create a DRAFT release with the artifacts attached. Draft on purpose: a maintainer runs the
+      # manual Windows acceptance checks (docs/CI_RELEASE.md) and publishes by hand.
+      - name: Create draft GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $files = @("$env:SETUP_EXE", "$env:SETUP_SHA")
+          $notes = @"
+          Automated draft for $env:VERSION.
+
+          This installer is UNSIGNED. Verify integrity via the SHA-256 checksum.
+
+          This build has NOT completed manual Windows acceptance. Before publishing:
+          run the clean-machine install, upgrade-in-place, uninstall (keep/delete data),
+          and WPF UI checks in docs/CI_RELEASE.md. A green CI/release run does not prove
+          the WPF UX or the installer UX works.
+
+          Attached: Nuvia-Setup-$env:VERSION.exe and its .sha256 checksum.
+          "@
+          gh release create "$env:GITHUB_REF_NAME" $files `
+            --draft `
+            --title "Nuvia $env:VERSION" `
+            --notes "$notes"
+
+

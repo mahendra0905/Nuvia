@@ -1,0 +1,55 @@
+<Window x:Class="Nuvia.App.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Nuvia.App"
+        Title="About Nuvia"
+        Width="420"
+        Height="330"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False"
+        Icon="Assets\Nuvia.ico"
+        FocusManager.FocusedElement="{Binding ElementName=CloseButton}">
+
+    <Border Padding="24,20">
+        <StackPanel>
+            <!-- Brand lockup: logo + lowercase Segoe Script wordmark (matches the login page) -->
+            <StackPanel Orientation="Horizontal">
+                <Image Source="Assets/n-logo.png" Width="34" Height="34"
+                       RenderOptions.BitmapScalingMode="HighQuality" />
+                <TextBlock Text="nuvia" FontFamily="Segoe Script" FontSize="30"
+                           Foreground="{StaticResource WordmarkBrush}" VerticalAlignment="Center" Margin="9,0,0,0" />
+            </StackPanel>
+            <!-- Tagline -->
+            <TextBlock Text="The cloud that never fills up." FontSize="13" Foreground="#4A5340"
+                       Margin="0,10,0,2" />
+            <!-- Version -->
+            <TextBlock FontSize="13" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,20">
+                <Run Text="Version " /><Run Text="{x:Static local:AppInfo.VersionDisplay}" />
+            </TextBlock>
+
+            <!-- Disclosure -->
+            <Border Background="#FFF8E1" Padding="14,12" CornerRadius="6" BorderBrush="#FFE082" BorderThickness="1">
+                <TextBlock TextWrapping="Wrap" FontSize="12" LineHeight="18">
+                    Nuvia is an unofficial local app. It uses the Telegram API and is not affiliated with Telegram.
+                    Files you store are sent to your own Telegram account.
+                </TextBlock>
+            </Border>
+
+            <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,16,0,0">
+                Built with .NET 8 · WPF · WTelegramClient
+            </TextBlock>
+
+            <Button x:Name="CloseButton"
+                    Content="Close"
+                    Style="{StaticResource PrimaryButton}"
+                    MinWidth="96"
+                    Margin="0,20,0,0"
+                    HorizontalAlignment="Right"
+                    Click="CloseButton_Click"
+                    IsDefault="True"
+                    IsCancel="True" />
+        </StackPanel>
+    </Border>
+
+</Window>

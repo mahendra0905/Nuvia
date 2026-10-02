@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>Nuvia.App</RootNamespace>
+    <AssemblyName>Nuvia</AssemblyName>
+    <ApplicationIcon>Assets\Nuvia.ico</ApplicationIcon>
+    <!-- Embeds Per-Monitor V2 DPI awareness so the UI renders crisp on scaled displays
+         instead of being bitmap-upscaled by Windows. -->
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Version>1.0.0</Version>
+    <FileVersion>1.0.0</FileVersion>
+    <Product>Nuvia</Product>
+    <Title>Nuvia</Title>
+    <Description>A private file vault backed by Telegram cloud storage.</Description>
+    <Copyright>Nuvia</Copyright>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\Nuvia.ico" />
+    <Resource Include="Assets\n-logo.png" />
+    <Resource Include="Assets\login-illustration.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.10" />
+    <PackageReference Include="WTelegramClient" Version="4.4.8" />
+    <!-- QR-code login: renders the tg://login token as a scannable image. PngByteQRCode is used,
+         which is platform-independent (no System.Drawing dependency). -->
+    <PackageReference Include="QRCoder" Version="1.6.0" />
+  </ItemGroup>
+
+</Project>

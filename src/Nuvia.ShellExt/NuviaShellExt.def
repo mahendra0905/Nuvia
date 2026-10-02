@@ -1,0 +1,7 @@
+; Nuvia.ShellExt — exported COM entry points.
+; Registration is done through the sparse package manifest (not regsvr32), so only the
+; in-process class-object plumbing is exported.
+LIBRARY "NuviaShellExt"
+EXPORTS
+    DllGetClassObject   PRIVATE
+    DllCanUnloadNow     PRIVATE

@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Network-free unit tests for Nuvia.
+
+    These tests exercise ONLY pure, deterministic logic (filename sanitisation and the
+    storage-destination model). They do NOT sign in to Telegram, do NOT touch the network,
+    and require NO api_id/api_hash or session. That is deliberate: public CI must never need
+    production credentials or a real account (see .github/workflows/ci.yml and docs/CI_RELEASE.md).
+
+    The target framework matches the app (net8.0-windows) because the referenced Nuvia.App
+    project is a Windows/WPF assembly. The tested types live in plain .cs files and construct
+    no WPF UI, so the tests run headless under `dotnet test` on windows-latest.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+    <IsPublishable>false</IsPublishable>
+    <!-- This is a test host, not the shipped app: build a console test host, not a WPF WinExe. -->
+    <UseWPF>false</UseWPF>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Nuvia.App\Nuvia.App.csproj" />
+  </ItemGroup>
+
+</Project>
