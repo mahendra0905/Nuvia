@@ -133,14 +133,24 @@ jobs:
           $pdbs = Get-ChildItem '.\artifacts\publish\win-x64' -Filter *.pdb -Recurse -ErrorAction SilentlyContinue
           if ($pdbs) { throw "Unexpected PDB(s) in publish output: $($pdbs.FullName -join ', ')" }
 
-      # Pin the Inno Setup 6 toolchain to an exact version rather than "latest".
-      - name: Install Inno Setup 6 (pinned)
-        run: choco install innosetup --version=6.2.2 -y --no-progress
-
+      # Inno Setup 6 is ALREADY preinstalled on the windows-latest image (6.7.1 at the time of
+      # writing). Do NOT choco-install a pinned older version here: Chocolatey refuses a downgrade by
+      # default ("--allow-downgrade ... Defaults to false"), so asking for 6.2.2 over the image's
+      # 6.7.1 fails the step immediately. Use what the image ships, install only as a fallback if the
+      # image ever drops it, and fail loudly if the major version moves off 6 (Nuvia.iss is Inno 6).
       - name: Locate ISCC
         run: |
+          $ErrorActionPreference = 'Stop'
           $iscc = 'C:\Program Files (x86)\Inno Setup 6\ISCC.exe'
+          if (-not (Test-Path $iscc)) {
+            Write-Host 'Inno Setup is not present on this image - installing it via Chocolatey.'
+            choco install innosetup -y --no-progress
+            if ($LASTEXITCODE -ne 0) { throw "choco install innosetup failed with exit code $LASTEXITCODE" }
+          }
           if (-not (Test-Path $iscc)) { throw "ISCC.exe not found at $iscc" }
+          $ver = (Get-Item $iscc).VersionInfo.FileVersion
+          Write-Host "Using ISCC $ver ($iscc)"
+          if ($ver -notlike '6.*') { throw "Expected Inno Setup 6.x, found '$ver'. installer/Nuvia.iss targets Inno Setup 6 - re-validate it before moving to another major." }
           "ISCC=$iscc" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
 
       # Compile the installer WITH credential injection. The api_id/api_hash are read from Environment
