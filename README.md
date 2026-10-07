@@ -117,8 +117,5 @@ See [`docs/CI_RELEASE.md`](docs/CI_RELEASE.md) for details.
 
 Issues and pull requests are welcome. Please keep changes focused, run the tests before submitting, and never include credentials, session files or `index.db` in a PR.
 
-## License
-
-_Add your license here (e.g. MIT) and include a `LICENSE` file in the repository root._
 
 Nuvia is an unofficial application that uses the Telegram API and is not affiliated with Telegram.
